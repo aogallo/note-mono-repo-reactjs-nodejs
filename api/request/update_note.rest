@@ -1,0 +1,7 @@
+PUT http://localhost:3001/api/notes/6157f790413f605448e88e4d
+Content-Type: application/json
+
+{
+	"content": "Bootcamp reactjs nodejs mnogodb",
+	"important": true
+}
