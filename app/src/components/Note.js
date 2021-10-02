@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Note = ({ key, note, toggleImportance }) => {
   return (
@@ -8,7 +8,7 @@ const Note = ({ key, note, toggleImportance }) => {
         make {note.important ? 'not' : ''} important
       </button>
     </li>
-  );
-};
+  )
+}
 
-export default Note;
+export default Note

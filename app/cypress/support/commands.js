@@ -1,14 +1,14 @@
-const urlApi = 'http://localhost:3001/api';
+const urlApi = 'http://localhost:3001/api'
 
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request('POST', 'http://localhost:3001/api/login', {
     username,
-    password,
+    password
   }).then((response) => {
-    localStorage.setItem('user', JSON.stringify(response.body));
-    cy.visit('http://localhost:3000');
-  });
-});
+    localStorage.setItem('user', JSON.stringify(response.body))
+    cy.visit('http://localhost:3000')
+  })
+})
 
 Cypress.Commands.add('createdNote', (content, important) => {
   cy.request({
@@ -16,11 +16,11 @@ Cypress.Commands.add('createdNote', (content, important) => {
     url: `${urlApi}/notes`,
     body: {
       content,
-      important,
+      important
     },
     headers: {
-      Authorization: `Bearer ${JSON.parse(localStorage.getItem('user')).token}`,
-    },
-  });
-  cy.visit('http://localhost:3000');
-});
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem('user')).token}`
+    }
+  })
+  cy.visit('http://localhost:3000')
+})

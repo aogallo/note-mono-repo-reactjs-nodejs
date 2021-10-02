@@ -1,7 +1,6 @@
 require('dotenv').config();
 require('./mongo');
 const express = require('express');
-const morgan = require('morgan');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
 const Tracing = require('@sentry/tracing');
@@ -36,7 +35,7 @@ Sentry.init({
 });
 
 app.use(cors());
-app.use(morgan('combined'));
+// app.use(morgan('combined'))
 app.use(express.json());
 app.use(express.static('../app/build'));
 
@@ -79,7 +78,7 @@ app.put('/api/notes/:id', (request, response, next) => {
     important: note.important,
   };
 
-  console.log(`newNoteInfo`, newNoteInfo);
+  console.log('newNoteInfo', newNoteInfo);
 
   Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
     .then((noteUpdated) => response.status(200).json(noteUpdated))

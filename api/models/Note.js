@@ -1,4 +1,4 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require('mongoose')
 
 const noteSchema = new Schema(
   {
@@ -7,29 +7,29 @@ const noteSchema = new Schema(
     important: Boolean,
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
-    },
+      ref: 'User'
+    }
   },
   {
     writeConcern: {
       w: 'majority',
       j: true,
-      wtimeout: 10000,
-    },
+      wtimeout: 10000
+    }
   }
-);
+)
 
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id;
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
+    returnedObject.id = returnedObject._id
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
 
-const Note = model('Note', noteSchema);
+const Note = model('Note', noteSchema)
 
-module.exports = Note;
+module.exports = Note
 // const note = new Note({
 // 	content: 'Mongodb',
 // 	date: new Date(),
