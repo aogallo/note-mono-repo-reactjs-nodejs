@@ -3,23 +3,15 @@ import loginService from './services/login';
 import noteService from './services/notes';
 import LoginForm from './components/LoginForm';
 import { useHistory } from 'react-router-dom';
+import useUser from './hooks/useUser';
 
 const Login = () => {
   const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  useEffect(() => {
-    const loggedUserJson = window.localStorage.getItem('user');
-    console.log(`loggedUserJson`, loggedUserJson);
-    if (loggedUserJson) {
-      const user = JSON.parse(loggedUserJson);
-      setUser(user);
-      noteService.setToken(user.token);
-    }
-  }, []);
+  const { user, setUser } = useUser();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -46,7 +38,6 @@ const Login = () => {
   }
 
   if (user) {
-    history.push('/notes');
     return <p>User is logged</p>;
   }
 

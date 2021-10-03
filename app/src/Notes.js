@@ -5,32 +5,14 @@ import loginService from './services/login';
 import Login from './Login';
 import NoteForm from './components/NoteForm';
 import Notification from './components/Notification';
-
+import useUser from './hooks/useUser';
+import useNotes from './hooks/useNotes';
 const Notes = () => {
-  const [notes, setNotes] = useState([]);
-
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    noteService.getAll().then((initialNotes) => {
-      setNotes(initialNotes);
-    });
-  }, []);
-
-  useEffect(() => {
-    const loggedUserJson = window.localStorage.getItem('user');
-    console.log(`loggedUserJson`, loggedUserJson);
-    if (loggedUserJson) {
-      const user = JSON.parse(loggedUserJson);
-      setUser(user);
-      noteService.setToken(user.token);
-    }
-  }, []);
+  const { user, setUser } = useUser();
+  const { notes, addNote, toggleImportanceOf } = useNotes();
 
   const handleLogout = () => {
     setUser(null);
@@ -38,17 +20,17 @@ const Notes = () => {
     window.localStorage.removeItem('user');
   };
 
-  const addNote = (noteObject) => {
-    noteService.create(noteObject).then((returnedObject) => {
-      setNotes(notes.concat(returnedObject));
-    });
-  };
+  const toggleImportanceNote = (id) => {
+    const note = notes.find((n) => n.id === id);
+    const changedNote = { ...note, important: !note.important };
 
-  const toggleImportanceOf = (id, note) => {
-    note.important = !note.important;
-    noteService
-      .update(id, note)
-      .then(() => noteService.getAll().then((notes) => setNotes(notes)));
+    toggleImportanceOf(id).catch(() => {
+      setErrorMessage(`Note was alredy removed form server`);
+
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    });
   };
 
   const notesToShow = showAll
@@ -74,7 +56,7 @@ const Notes = () => {
           <Note
             key={i}
             note={note}
-            toggleImportance={() => toggleImportanceOf(note.id, note)}
+            toggleImportance={() => toggleImportanceNote(note.id)}
           />
         ))}
       </ul>
