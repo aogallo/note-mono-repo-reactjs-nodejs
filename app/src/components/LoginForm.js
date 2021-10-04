@@ -1,27 +1,34 @@
 import React from 'react';
-import useField from '../hooks/useField';
+import PropTypes from 'prop-types';
+import { Button, Form } from 'react-bootstrap';
 
-const LoginForm = ({
-  handleSubmit,
-  username,
-  handleUsernameChange,
-  password,
-  handlePasswordChange,
-}) => {
-  const username = useField({ type: 'text' });
-  const password = useField({ type: 'password' });
-
+export default function LoginForm({ handleSubmit, ...props }) {
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <input {...username} name="username" placeholder="Username" />
-      </div>
-      <div>
-        <input {...password} name="password" placeholder="Password" />
-      </div>
-      <button id="form-login-button">login</button>
-    </form>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group id="username">
+        <Form.Control
+          type="text"
+          value={props.username}
+          name="Username"
+          placeholder="Username"
+          onChange={props.handleUsernameChange}
+        />
+      </Form.Group>
+      <Form.Group id="password">
+        <Form.Control
+          type="password"
+          value={props.password}
+          name="Password"
+          placeholder="Password"
+          onChange={props.handlePasswordChange}
+        />
+      </Form.Group>
+      <Button id="form-login-button">Login</Button>
+    </Form>
   );
-};
+}
 
-export default LoginForm;
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  username: PropTypes.string,
+};

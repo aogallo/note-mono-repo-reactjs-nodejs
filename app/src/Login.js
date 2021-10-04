@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import LoginForm from './components/LoginForm';
+import LoginForm from './components/LoginForm.js';
 import { useHistory } from 'react-router-dom';
 import useUser from './hooks/useUser';
 
-const Login = () => {
+export default function Login() {
   const history = useHistory();
+  const { login } = useUser();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-
-  const { user, login } = useUser();
 
   const handleLogin = async (event) => {
     event.preventDefault();
+
     try {
-      login();
+      login(username, password);
       setUsername('');
       setPassword('');
+
       history.push('/notes');
     } catch (e) {
-      setErrorMessage('wrong credetianls');
+      setErrorMessage('Wrong credentials');
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
@@ -36,13 +39,11 @@ const Login = () => {
 
   return (
     <LoginForm
-      handleSubmit={handleLogin}
       username={username}
-      handleUsernameChange={({ target }) => setUsername(target.value)}
       password={password}
+      handleUsernameChange={({ target }) => setUsername(target.value)}
       handlePasswordChange={({ target }) => setPassword(target.value)}
+      handleSubmit={handleLogin}
     />
   );
-};
-
-export default Login;
+}

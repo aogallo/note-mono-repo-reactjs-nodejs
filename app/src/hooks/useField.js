@@ -12,3 +12,5 @@ const useField = ({ type }) => {
     onChange,
   };
 };
+
+export default useField;

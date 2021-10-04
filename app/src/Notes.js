@@ -5,15 +5,21 @@ import NoteForm from './components/NoteForm';
 import Notification from './components/Notification';
 import useUser from './hooks/useUser';
 import useNotes from './hooks/useNotes';
+import { useHistory } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
+
 const Notes = () => {
-  const [showAll, logout] = useState(true);
+  const history = useHistory();
+
+  const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { user, logout } = useUser();
   const { notes, addNote, toggleImportanceOf } = useNotes();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
+    history.push('/login');
   };
 
   const toggleImportanceNote = (id) => {
@@ -43,15 +49,18 @@ const Notes = () => {
       <div>
         <button>show {showAll ? 'important' : 'all'}</button>
       </div>
-      <ul>
-        {notesToShow.map((note, i) => (
-          <Note
-            key={i}
-            note={note}
-            toggleImportance={() => toggleImportanceNote(note.id)}
-          />
-        ))}
-      </ul>
+      <Table striped>
+        <tbody>
+          {notesToShow.map((note, i) => (
+            <tr key={note.id}>
+              <Note
+                note={note}
+                toggleImportance={() => toggleImportanceNote(note.id)}
+              />
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 };

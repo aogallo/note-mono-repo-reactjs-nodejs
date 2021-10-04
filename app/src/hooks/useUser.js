@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import noteService from '../services/notes';
+import loginService from '../services/login';
 
 const useUser = () => {
   const [user, setUser] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const loggedUserJson = window.localStorage.getItem('user');
@@ -13,9 +15,14 @@ const useUser = () => {
     }
   }, []);
 
-  const login = async ({ username, password }) => {
+  const login = async (username, password) => {
+    console.log(`username userUser`, username);
+    console.log(`password userUser`, password);
     try {
-      const user = await loginService.login({ username, password });
+      const user = await loginService.login({
+        username,
+        password,
+      });
       setUser(user);
       window.localStorage.removeItem('user');
       window.localStorage.setItem('user', JSON.stringify(user));
