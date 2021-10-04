@@ -13,9 +13,31 @@ const useUser = () => {
     }
   }, []);
 
+  const login = async ({ username, password }) => {
+    try {
+      const user = await loginService.login({ username, password });
+      setUser(user);
+      window.localStorage.removeItem('user');
+      window.localStorage.setItem('user', JSON.stringify(user));
+      noteService.setToken(user.token);
+    } catch (e) {
+      setErrorMessage('wrong credetianls');
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    noteService.setToken('');
+    window.localStorage.removeItem('user');
+  };
+
   return {
     user,
-    setUser,
+    login,
+    logout,
   };
 };
 

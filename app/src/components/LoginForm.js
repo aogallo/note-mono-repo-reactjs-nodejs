@@ -1,4 +1,5 @@
 import React from 'react';
+import useField from '../hooks/useField';
 
 const LoginForm = ({
   handleSubmit,
@@ -7,25 +8,16 @@ const LoginForm = ({
   password,
   handlePasswordChange,
 }) => {
+  const username = useField({ type: 'text' });
+  const password = useField({ type: 'password' });
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <input
-          type="text"
-          name="username"
-          value={username}
-          placeholder="Username"
-          onChange={handleUsernameChange}
-        />
+        <input {...username} name="username" placeholder="Username" />
       </div>
       <div>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          placeholder="Password"
-          onChange={handlePasswordChange}
-        />
+        <input {...password} name="password" placeholder="Password" />
       </div>
       <button id="form-login-button">login</button>
     </form>

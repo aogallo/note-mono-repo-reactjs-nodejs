@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import loginService from './services/login';
-import noteService from './services/notes';
+import React, { useState } from 'react';
 import LoginForm from './components/LoginForm';
 import { useHistory } from 'react-router-dom';
 import useUser from './hooks/useUser';
@@ -11,19 +9,14 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { user, setUser } = useUser();
+  const { user, login } = useUser();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const user = await loginService.login({ username, password });
-      setUser(user);
-      window.localStorage.removeItem('user');
-      window.localStorage.setItem('user', JSON.stringify(user));
+      login();
       setUsername('');
-      noteService.setToken(user.token);
       setPassword('');
-
       history.push('/notes');
     } catch (e) {
       setErrorMessage('wrong credetianls');

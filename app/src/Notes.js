@@ -1,32 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Note from './components/Note';
-import noteService from './services/notes';
-import loginService from './services/login';
 import Login from './Login';
 import NoteForm from './components/NoteForm';
 import Notification from './components/Notification';
 import useUser from './hooks/useUser';
 import useNotes from './hooks/useNotes';
 const Notes = () => {
-  const [showAll, setShowAll] = useState(true);
+  const [showAll, logout] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { user, setUser } = useUser();
+  const { user, logout } = useUser();
   const { notes, addNote, toggleImportanceOf } = useNotes();
 
   const handleLogout = () => {
-    setUser(null);
-    noteService.setToken('');
-    window.localStorage.removeItem('user');
+    logout();
   };
 
   const toggleImportanceNote = (id) => {
-    const note = notes.find((n) => n.id === id);
-    const changedNote = { ...note, important: !note.important };
-
     toggleImportanceOf(id).catch(() => {
-      setErrorMessage(`Note was alredy removed form server`);
-
+      setErrorMessage('Note was already removed from server');
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
