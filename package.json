@@ -13,7 +13,7 @@
   "scripts": {
     "build": "SKIP_PREFLIGHT_CHECK=true npm run build --workspace=app",
     "lint": "eslint ./api ./app",
-    "start": "npm run start --workspace=api",
+    "start": "npm run build && npm run start --workspace=api",
     "dev:api": "NODE_ENV=development npm run build && nodemon index.js --workspace=api",
 		"dev:app": "SKIP_PREFLIGHT_CHECK=true npm run start --workspace=app"
   },
