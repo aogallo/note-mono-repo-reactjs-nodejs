@@ -15,7 +15,7 @@
     "lint": "eslint ./api ./app",
     "start": "npm run build && npm run start --workspace=api",
     "dev:api": "NODE_ENV=development npm run build && nodemon index.js --workspace=api",
-		"dev:app": "SKIP_PREFLIGHT_CHECK=true npm run start --workspace=app"
+    "dev:app": "SKIP_PREFLIGHT_CHECK=true npm run start --workspace=app"
   },
   "eslintConfig": {
     "ignorePatterns": "build",
